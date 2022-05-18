@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+
+.idea
+.DS_Store
+
+
+/env/
+конспекты
+keys.txt
+settings/products.db
+examples.py

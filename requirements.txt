@@ -1,0 +1,13 @@
+certifi==2021.10.8
+charset-normalizer==2.0.12
+emoji==1.7.0
+greenlet==1.1.2
+idna==3.3
+importlib-metadata==4.11.3
+Markdown==3.3.7
+pyTelegramBotAPI==4.5.1
+python-markdown-math==0.8
+requests==2.27.1
+SQLAlchemy==1.4.36
+urllib3==1.26.9
+zipp==3.8.0
