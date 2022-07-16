@@ -13,7 +13,7 @@ class HandlerMain:
         self.bot = bot
         # здесь будет инициализация обработчиков
         self.handler_commands = HandlerCommands(self.bot)  # обрабатывает /start
-        self.handlerP_all_text = HandlerAllText(self.bot) # обрабатывает настроки, инфо, <<
+        self.handlerP_all_text = HandlerAllText(self.bot)  # обрабатывает настроки, инфо, <<
 
     def handle(self):
         # здесь запуск обработчиков

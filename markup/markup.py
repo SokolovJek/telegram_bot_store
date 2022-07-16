@@ -58,7 +58,7 @@ class Keyboards:
 
     def category_menu(self):
         """
-        Создает разметку кноапок в меню 'Настройки'
+        Создает разметку кнопок в меню 'Настройки'
         """
         self.markup = ReplyKeyboardMarkup(True, row_width=1)
         itm_btn_1 = self.set_btn('SEMIPRODUCT')
@@ -83,7 +83,8 @@ class Keyboards:
             self.markup.add(self.set_inline_btn(item))
         return self.markup
 
-    def set_inline_btn(self, name):
+    @staticmethod
+    def set_inline_btn(name):
         """Cоздаем и возвращаем инлайн-кнопку по входным параметрам"""
         return InlineKeyboardButton(str(name),  # вывод названия кнопки
                                     # перенаправляем в другую функцию ID товара,

@@ -55,22 +55,36 @@ class HandlerAllText(Handler):
         # который обрабатывает входящие текстовые сообщения от нажатия кнопок
         @self.bot.message_handler(func=lambda message: True)
         def handle(message):
+
             # *** меню ****
+
             print(message.text)
+            print(1)
+
             if message.text == config.KEYBOARD['INFO']:
                 self.pressed_btn_info(message)
+
             if message.text == config.KEYBOARD['SETTINGS']:
                 self.pressed_btn_settings(message)
+
             if message.text == config.KEYBOARD['<<']:
                 self.pressed_btn_back(message)
+
             if message.text == config.KEYBOARD['CHOOSE_GOODS']:
                 self.pressed_btn_category(message)
+
             # обработка конкретного выбора категории
+
             if message.text == config.KEYBOARD['SEMIPRODUCT']:
+
                 self.pressed_btn_product(message, 'SEMIPRODUCT')
+
             if message.text == config.KEYBOARD['GROCERY']:
+
                 self.pressed_btn_product(message, 'GROCERY')
+
             if message.text == config.KEYBOARD['ICE_CREAM']:
+
                 self.pressed_btn_product(message, 'ICE_CREAM')
 
             else:
