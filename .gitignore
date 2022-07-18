@@ -11,3 +11,5 @@ __pycache__/
 keys.txt
 settings/products.db
 examples.py
+examples_bd.py
+example_products.db

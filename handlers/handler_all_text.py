@@ -10,6 +10,7 @@ class HandlerAllText(Handler):
 
     def __init__(self, bot):
         super().__init__(bot)
+        # step необхадим для поочередном обходе заказаных продуктов при отрисовки "Заказа"(ORDER)
         self.step = 0
 
     def pressed_btn_settings(self, message):
@@ -50,16 +51,47 @@ class HandlerAllText(Handler):
                               'ОК',
                               reply_markup=self.keybords.category_menu())
 
+    def pressed_btn_order(self, message):
+        """
+        Обрабатывает входящие сообщения от нажатия на кнопку "Заказ(ORDER)"
+        """
+        # обнуляем данные шага
+        self.step = 0
+        # получаем список всех товаров в заказе
+        count = self.BD.select_all_product_id()
+        # получаем количество по каждой позиции товара в заказе
+        quantity = self.BD.select_order_quantity(count[self.step])
+        # отпровляем ответ пользователю
+        self.send_message_order(count[self.step], quantity, message)
+
+    def send_message_order(self, product_id, quantity, message):
+        """
+        Отправляет ответ пользователю при выполнении различных действий
+        :param product_id: ID продукта
+        :param quantity: количество его в БД
+        :param message: сообщение от переданное от бота
+        """
+        self.bot.send_message(message.chat.id,
+                              MESSAGES['order_number'].format(self.step + 1), parse_mode="HTML")
+        self.bot.send_message(message.chat.id,
+                              MESSAGES['order'].format(self.BD.select_single_product_name(product_id),
+                                                       self.BD.select_single_product_title(product_id),
+                                                       self.BD.select_single_product_price(product_id),
+                                                       self.BD.select_single_product_quantity(product_id)),
+                              parse_mode="HTML",
+                              reply_markup=self.keybords.orders_menu(self.step, quantity))
+
     def handle(self):
-        # обработчик(декоратор) сообщений
-        # который обрабатывает входящие текстовые сообщения от нажатия кнопок
+        """
+        обработчик(декоратор) сообщений
+        который обрабатывает входящие текстовые сообщения от нажатия кнопок
+        """
         @self.bot.message_handler(func=lambda message: True)
         def handle(message):
 
             # *** меню ****
 
             print(message.text)
-            print(1)
 
             if message.text == config.KEYBOARD['INFO']:
                 self.pressed_btn_info(message)
@@ -73,19 +105,30 @@ class HandlerAllText(Handler):
             if message.text == config.KEYBOARD['CHOOSE_GOODS']:
                 self.pressed_btn_category(message)
 
+            if message.text == config.KEYBOARD['ORDER']:
+                # если в БД есть заказ
+                if self.BD.count_rows_order() > 0:
+                    self.pressed_btn_order(message)
+                # если нет, шлем смс 'у вас нет заказов и рендерим меню
+                else:
+                    self.bot.send_message(message.chat.id,
+                                          MESSAGES['no_orders'],
+                                          parse_mode='HTML',
+                                          reply_markup=self.keybords.category_menu())
+
             # обработка конкретного выбора категории
 
             if message.text == config.KEYBOARD['SEMIPRODUCT']:
-
                 self.pressed_btn_product(message, 'SEMIPRODUCT')
 
             if message.text == config.KEYBOARD['GROCERY']:
-
                 self.pressed_btn_product(message, 'GROCERY')
 
             if message.text == config.KEYBOARD['ICE_CREAM']:
 
                 self.pressed_btn_product(message, 'ICE_CREAM')
+
+
 
             else:
                 print(f'my ERROR from HandlerAllText {message.text}')

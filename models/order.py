@@ -12,7 +12,7 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True)
     quantity = Column(Integer)
-    date = Column(DateTime)
+    data = Column(DateTime)
     product_id = Column(Integer, ForeignKey('products.id'))
     user_id = Column(Integer)
     # для каскадного удаления данных из таблици
